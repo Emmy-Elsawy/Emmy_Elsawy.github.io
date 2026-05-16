@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emmy El-Sawy — Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+  <style>
+    /* ============================================================
+       🎨 PALETTE — change anything here, everything updates globally
+       ============================================================ */
+    :root {
+      --p-accent:       #1a5c9e;        /* main color — buttons, links, section titles, dots */
+      --p-accent-light: #e8f1fb;        /* light tint — hero bg, badge fills, icon bg */
+      --p-accent-mid:   #3b82c4;        /* hover on filled buttons */
+      --p-tag-bg:       #dbeafe;        /* tech/skill tag background */
+      --p-tag-text:     #1e40af;        /* tech/skill tag text */
+      --p-hero-bg:      #f0f6ff;        /* hero section background */
+      --p-section-alt:  #f8fafc;        /* every other section background */
+      --p-border:       rgba(0,0,0,0.08); /* card and section borders */
+      --p-dot:          #93c5fd;        /* timeline dots */
+
+      /* ── leave these alone unless you want to retheme the special badges ── */
+      --p-sport-bg:     #fef3c7;
+      --p-sport-text:   #92400e;
+      --p-pub-bg:       #ede9fe;
+      --p-pub-text:     #5b21b6;
+      --p-pub-label-bg: #ede9fe;
+      --p-pub-label-text:#5b21b6;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+    }
+    a { color: var(--p-accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      border-bottom: 0.5px solid var(--p-border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo { font-weight: 500; font-size: 15px; color: var(--p-accent); }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { font-size: 13px; color: #666; transition: color .2s; }
+    .nav-links a:hover { color: var(--p-accent); text-decoration: none; }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      background: var(--p-hero-bg);
+      padding: 3.5rem 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .hero-top { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--p-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 500; color: #fff; flex-shrink: 0;
+    }
+    .hero h1 { font-size: 26px; font-weight: 500; line-height: 1.2; color: #111; }
+    .hero .subtitle { font-size: 14px; color: #666; margin-top: 2px; }
+    .hero-bio { max-width: 680px; font-size: 14px; color: #555; line-height: 1.7; }
+
+    .badges { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .5rem; }
+    .badge {
+      padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+      background: var(--p-accent-light); color: var(--p-accent);
+    }
+    .badge.sport { background: var(--p-sport-bg); color: var(--p-sport-text); }
+    .badge.pub   { background: var(--p-pub-bg);   color: var(--p-pub-text); }
+
+    .hero-links { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .hero-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 16px; border-radius: 6px; font-size: 13px;
+      border: 0.5px solid var(--p-accent); color: var(--p-accent);
+      background: transparent; cursor: pointer; transition: background .15s;
+      text-decoration: none;
+    }
+    .hero-btn:hover { background: var(--p-accent-light); text-decoration: none; }
+    .hero-btn.filled { background: var(--p-accent); color: #fff; border-color: var(--p-accent); }
+    .hero-btn.filled:hover { background: var(--p-accent-mid); }
+
+    /* ============================================================
+       SECTIONS
+       ============================================================ */
+    section { padding: 2.5rem 2rem; }
+    section:nth-of-type(even) { background: var(--p-section-alt); }
+
+    .section-title {
+      font-size: 11px; font-weight: 500; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--p-accent);
+      margin-bottom: 1.5rem; padding-bottom: .5rem;
+      border-bottom: 2px solid var(--p-accent-light);
+    }
+
+    /* ============================================================
+       GRIDS
+       ============================================================ */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+
+    /* ============================================================
+       CARDS
+       ============================================================ */
+    .card {
+      background: #fff;
+      border: 0.5px solid var(--p-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+    .card h3 { font-size: 14px; font-weight: 500; line-height: 1.3; color: #111; }
+    .card .date { font-size: 11px; color: #888; white-space: nowrap; padding-top: 2px; }
+    .card p { font-size: 13px; color: #555; line-height: 1.6; }
+
+    /* ============================================================
+       TAGS
+       ============================================================ */
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .25rem; }
+    .tag {
+      padding: 2px 8px; border-radius: 4px; font-size: 11px;
+      background: var(--p-tag-bg); color: var(--p-tag-text);
+    }
+
+    /* ============================================================
+       EXPERIENCE TIMELINE
+       ============================================================ */
+    .exp-item {
+      display: flex; gap: 1rem;
+      padding: .75rem 0;
+      border-bottom: 0.5px solid var(--p-border);
+    }
+    .exp-item:last-child { border-bottom: none; }
+    .exp-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--p-dot); flex-shrink: 0; margin-top: 5px;
+    }
+    .exp-role  { font-size: 14px; font-weight: 500; color: #111; }
+    .exp-org   { font-size: 13px; color: #666; }
+    .exp-date  { font-size: 12px; color: #888; }
+    .exp-bullets { margin-top: .4rem; padding-left: 1rem; font-size: 13px; color: #555; }
+    .exp-bullets li { margin-bottom: 3px; }
+
+    /* ============================================================
+       SKILLS
+       ============================================================ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: .75rem;
+    }
+    .skill-group {
+      background: #fff;
+      border: 0.5px solid var(--p-border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .skill-group h4 {
+      font-size: 12px; font-weight: 500; color: var(--p-accent);
+      margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+    .skill-pill {
+      font-size: 12px; padding: 3px 9px; border-radius: 4px;
+      background: var(--p-section-alt); border: 0.5px solid var(--p-border); color: #333;
+    }
+
+    /* ============================================================
+       PUBLICATION
+       ============================================================ */
+    .pub-card {
+      border: 0.5px solid var(--p-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      background: #fff;
+    }
+    .pub-label {
+      font-size: 11px; color: var(--p-pub-label-text); font-weight: 500;
+      background: var(--p-pub-label-bg);
+      padding: 2px 8px; border-radius: 4px;
+      display: inline-block; margin-bottom: .5rem;
+    }
+    .pub-card h3 { font-size: 15px; font-weight: 500; margin-bottom: .4rem; color: #111; }
+    .pub-card .authors { font-size: 13px; color: #666; margin-bottom: .75rem; }
+    .pub-card .abstract { font-size: 13px; color: #555; line-height: 1.6; }
+
+    /* ============================================================
+       EDUCATION
+       ============================================================ */
+    .edu-card {
+      background: #fff;
+      border: 0.5px solid var(--p-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .edu-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .5rem; }
+    .edu-uni { font-size: 15px; font-weight: 500; color: #111; }
+    .edu-degree { font-size: 13px; color: #666; margin-top: 3px; }
+    .edu-gpa { font-size: 13px; color: var(--p-accent); font-weight: 500; }
+    .courses { margin-top: .75rem; font-size: 12px; color: #777; line-height: 1.6; }
+
+    /* ============================================================
+       CONTACT
+       ============================================================ */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 1rem;
+      background: #fff; border: 0.5px solid var(--p-border); border-radius: 8px;
+    }
+    .contact-icon {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--p-accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--p-accent); font-size: 16px;
+    }
+    .contact-label { font-size: 11px; color: #888; }
+    .contact-val   { font-size: 13px; font-weight: 500; color: #111; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 12px; color: #888;
+      border-top: 0.5px solid var(--p-border);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links { gap: .75rem; }
+      section { padding: 2rem 1rem; }
+      .hero { padding: 2rem 1rem; }
+      .hero h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav>
+  <span class="nav-logo">Emmy El-Sawy</span>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#research">Research</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<div class="hero" id="about">
+  <div class="hero-top">
+    <div class="avatar">EE</div>
+    <div>
+      <h1>Emmy Amir Magdy El-Sawy</h1>
+      <div class="subtitle">AI &amp; Robotics Engineer · MUST University · Cairo, Egypt</div>
+      <div class="badges">
+        <span class="badge">Artificial Intelligence</span>
+        <span class="badge">Robotics &amp; IoT</span>
+        <span class="badge">Computer Vision</span>
+        <span class="badge sport">🎯 National Athlete</span>
+        <span class="badge pub">📄 Researcher</span>
+      </div>
+    </div>
+  </div>
+  <p class="hero-bio">
+    B.S. student in Information Technology (AI) with hands-on experience spanning autonomous robotics,
+    deep learning research, embedded IoT systems, and software engineering. Represented Egypt
+    internationally in Target Sprint and bring the same discipline and focus to every engineering challenge.
+  </p>
+  <div class="hero-links">
+    <a class="hero-btn filled" href="mailto:emmyelsawyshaheen@gmail.com">
+      <i class="ti ti-mail"></i> Email me
+    </a>
+    <a class="hero-btn" href="#projects">
+      <i class="ti ti-code"></i> Projects
+    </a>
+    <a class="hero-btn" href="#research">
+      <i class="ti ti-file-text"></i> Research
+    </a>
+    <a class="hero-btn" href="https://github.com/Emmy-Elsawy" target="_blank">
+      <i class="ti ti-brand-github"></i> GitHub
+    </a>
+    <a class="hero-btn" href="https://www.linkedin.com/in/emmy-amir-31832829b" target="_blank">
+      <i class="ti ti-brand-linkedin"></i> LinkedIn
+    </a>
+  </div>
+</div>
+
+<!-- ============================================================
+     EXPERIENCE
+     ============================================================ -->
+<section id="experience">
+  <div class="section-title">Experience</div>
+  <div style="max-width: 760px;">
+
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div>
+        <div class="exp-role">AI Intern</div>
+        <div class="exp-org">Nahdet Misr Publishing Group</div>
+        <div class="exp-date">Summer 2025</div>
+        <ul class="exp-bullets">
+          <li>Built a data visualization project; cleaned and analyzed raw datasets for actionable insights.</li>
+          <li>Applied Python, SQL, and data analysis tools to solve real-world business problems.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div>
+        <div class="exp-role">Member — Google Developer Group (GDG)</div>
+        <div class="exp-org">GDG MUST</div>
+        <div class="exp-date">Dec 2023 – Jun 2025</div>
+        <ul class="exp-bullets">
+          <li>Awarded Certificate of Appreciation as one of the top active members (2023–2024).</li>
+          <li>Contributed to coding workshops, technical talks, and collaborative projects.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     PROJECTS
+     ============================================================ -->
+<section id="projects">
+  <div class="section-title">Projects</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Smart Cave Mining System</h3>
+        <span class="date">May 2026</span>
+      </div>
+      <p>Full-scale IoT mining safety platform using 3 ESP32s for real-time monitoring of gas, vibration, flood, and fire. Integrates two AI vision models for PPE enforcement and gem detection, plus a Python/Tkinter control dashboard.</p>
+      <div class="tags">
+        <span class="tag">ESP32</span><span class="tag">Python</span>
+        <span class="tag">Computer Vision</span><span class="tag">IoT</span>
+        <span class="tag">Tkinter</span><span class="tag">RFID</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Image Forgery Localization</h3>
+        <span class="date">May 2026</span>
+      </div>
+      <p>Multi-channel U-Net for pixel-level forgery detection, fusing RGB with ELA, noise residuals, and Canny edge maps. Achieved Dice 0.4004 and 46.43% forged pixel recall on CASIA ITDE v2.0.</p>
+      <div class="tags">
+        <span class="tag">Deep Learning</span><span class="tag">U-Net</span>
+        <span class="tag">Keras</span><span class="tag">OpenCV</span><span class="tag">Research</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Pharmacy Management System</h3>
+        <span class="date">Apr 2026</span>
+      </div>
+      <p>Full-featured desktop pharmacy app in C# / .NET with SQL Server backend. Features POS module, role-based access control, automated expiry alerts, and a sales analytics dashboard.</p>
+      <div class="tags">
+        <span class="tag">C#</span><span class="tag">.NET</span>
+        <span class="tag">SQL Server</span><span class="tag">Windows Forms</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>ROS 2 SLAM Comparative Study</h3>
+        <span class="date">Apr 2026</span>
+      </div>
+      <p>Implemented and benchmarked SLAM Toolbox vs Google Cartographer in ROS 2 Humble on a custom Gazebo robot. SLAM Toolbox achieved 0.13 m ATE vs 0.21 m for Cartographer.</p>
+      <div class="tags">
+        <span class="tag">ROS 2</span><span class="tag">Gazebo</span>
+        <span class="tag">SLAM</span><span class="tag">EKF</span><span class="tag">Python</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Multi-Topology LAN Design</h3>
+        <span class="date">Apr 2026</span>
+      </div>
+      <p>Designed and implemented Star, Ring, Tree, and Full Mesh topologies in Cisco Packet Tracer with FLSM subnetting, full inter-subnet routing, and complete device configuration.</p>
+      <div class="tags">
+        <span class="tag">Networking</span><span class="tag">Cisco</span>
+        <span class="tag">Subnetting</span><span class="tag">TCP/IP</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>ASL Pipeline Inspector</h3>
+        <span class="date">Apr 2026</span>
+      </div>
+      <p>Desktop tool with two interactive GUIs for visualizing a 10-step preprocessing pipeline on Sign Language MNIST data. Includes a live webcam visualizer running at up to 30 fps.</p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">OpenCV</span>
+        <span class="tag">scikit-image</span><span class="tag">Tkinter</span><span class="tag">CNN</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Birds Classifier — Perceptron &amp; Adaline</h3>
+        <span class="date">Apr 2026</span>
+      </div>
+      <p>Implemented Perceptron and Adaline binary classifiers from scratch, testing 5 feature-pair combinations. Analyzed decision boundaries and accuracy across class pairs.</p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">NumPy</span>
+        <span class="tag">Matplotlib</span><span class="tag">ML</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Office Boy — Autonomous Robot</h3>
+        <span class="date">Oct – Dec 2025</span>
+      </div>
+      <p>Autonomous service robot that receives user orders and completes real-world delivery tasks using embedded control and sensors.</p>
+      <div class="tags">
+        <span class="tag">Arduino</span><span class="tag">Sensors</span>
+        <span class="tag">Servo Control</span><span class="tag">Embedded</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Spidey — Object Retrieval Robot</h3>
+        <span class="date">Nov 2025</span>
+      </div>
+      <p>Autonomous robot that detects, navigates to, and retrieves tagged objects using real-time sensing, RFID, and navigation logic.</p>
+      <div class="tags">
+        <span class="tag">Arduino</span><span class="tag">RFID</span>
+        <span class="tag">IMU</span><span class="tag">Navigation</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Social Network Exploration</h3>
+        <span class="date">Nov 2025</span>
+      </div>
+      <p>Python-based social network analysis system to explore connectivity, benchmark graph algorithms, and generate friend recommendations.</p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">Graph Algorithms</span><span class="tag">AI</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Titanic Data Visualization</h3>
+        <span class="date">Nov 2025</span>
+      </div>
+      <p>Analyzed and visualized the Titanic dataset to identify passenger survival patterns and extract meaningful insights using Python and Matplotlib.</p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">NumPy</span><span class="tag">Matplotlib</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <h3>Easy Car — Online Car Shopping</h3>
+        <span class="date">Aug – Sep 2023</span>
+      </div>
+      <p>Functional online car shopping website with core user flows: browsing, purchasing, and arranging delivery.</p>
+      <div class="tags">
+        <span class="tag">HTML</span><span class="tag">Web</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     RESEARCH
+     ============================================================ -->
+<section id="research">
+  <div class="section-title">Research &amp; Publications</div>
+  <div class="pub-card">
+    <span class="pub-label">Under Review · 2026</span>
+    <h3>Image Forgery Localization via Multi-Channel U-Net Architecture</h3>
+    <p class="authors">
+      El-Essawi A., <strong>El-Sawy E.</strong>, Nasser A., Hegazy N., Anwar M. —
+      Dept. of Artificial Intelligence, MUST University, Giza, Egypt
+    </p>
+    <p class="abstract">
+      Proposes a pixel-level forgery localization framework fusing RGB with three forensic feature maps
+      (ELA, noise residuals, Canny edges) into a 6-channel U-Net input. Trained on CASIA ITDE v2.0
+      with a hybrid Focal-BCE + Dice loss; achieves Dice 0.4004 and 46.43% forged pixel recall,
+      reducing the generalization gap from ~41% to ~18% compared to the baseline model.
+    </p>
+    <div class="tags" style="margin-top: .75rem;">
+      <span class="tag">U-Net</span><span class="tag">Image Forensics</span>
+      <span class="tag">Deep Learning</span><span class="tag">Keras</span>
+      <span class="tag">Computer Vision</span><span class="tag">CASIA ITDE v2.0</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SKILLS
+     ============================================================ -->
+<section id="skills">
+  <div class="section-title">Skills</div>
+  <div class="skills-grid">
+
+    <div class="skill-group">
+      <h4>Languages</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">C++</span>
+        <span class="skill-pill">C</span>
+        <span class="skill-pill">C#</span>
+        <span class="skill-pill">SQL</span>
+        <span class="skill-pill">HTML</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h4>AI &amp; Machine Learning</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Keras</span>
+        <span class="skill-pill">TensorFlow</span>
+        <span class="skill-pill">OpenCV</span>
+        <span class="skill-pill">scikit-image</span>
+        <span class="skill-pill">NumPy</span>
+        <span class="skill-pill">Matplotlib</span>
+        <span class="skill-pill">U-Net</span>
+        <span class="skill-pill">CNN</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h4>Robotics &amp; IoT</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">ROS 2</span>
+        <span class="skill-pill">Gazebo</span>
+        <span class="skill-pill">Arduino</span>
+        <span class="skill-pill">ESP32</span>
+        <span class="skill-pill">RFID</span>
+        <span class="skill-pill">IMU</span>
+        <span class="skill-pill">LiDAR</span>
+        <span class="skill-pill">EKF</span>
+        <span class="skill-pill">Servo Control</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h4>Networking</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Cisco Packet Tracer</span>
+        <span class="skill-pill">TCP/IP</span>
+        <span class="skill-pill">FLSM</span>
+        <span class="skill-pill">LAN Design</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h4>Software &amp; Tools</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">C# .NET</span>
+        <span class="skill-pill">SQL Server</span>
+        <span class="skill-pill">Tkinter</span>
+        <span class="skill-pill">Git</span>
+        <span class="skill-pill">Linux</span>
+        <span class="skill-pill">Xcode</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h4>Soft Skills</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Teamwork</span>
+        <span class="skill-pill">Problem-Solving</span>
+        <span class="skill-pill">Adaptability</span>
+        <span class="skill-pill">Communication</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     EDUCATION
+     ============================================================ -->
+<section>
+  <div class="section-title">Education</div>
+  <div class="edu-card">
+    <div class="edu-top">
+      <div>
+        <div class="edu-uni">Misr University for Science and Technology (MUST)</div>
+        <div class="edu-degree">B.S. in Information Technology (Artificial Intelligence) · Aug 2023 – Jun 2027</div>
+      </div>
+      <div class="edu-gpa">GPA 3.22 / 4.00</div>
+    </div>
+    <div class="courses">
+      Robotics · Data Science · AI Programming Languages · System Analysis · Operating Systems ·
+      Data Structures &amp; Algorithms · Object-Oriented Programming · Embedded Systems ·
+      Computer Networks · Software Engineering · Statistics &amp; Data Science
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ATHLETICS
+     ============================================================ -->
+<section>
+  <div class="section-title">Athletic Achievements</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-top">
+        <h3>Egyptian National Team — Target Sprint</h3>
+        <span class="date">2021 – 2024</span>
+      </div>
+      <p>Represented Egypt in international competitions combining running and air rifle shooting. Developed elite-level discipline, focus, and composure under pressure.</p>
+    </div>
+    <div class="card">
+      <div class="card-top">
+        <h3>Professional Track &amp; Field Athlete</h3>
+        <span class="date">2024 – Present</span>
+      </div>
+      <p>Competing professionally at Nasr City Sporting Club, balancing high-level athletics with a full engineering degree.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section id="contact">
+  <div class="section-title">Contact</div>
+  <div class="contact-grid">
+
+    <div class="contact-item">
+      <div class="contact-icon"><i class="ti ti-mail"></i></div>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-val" style="font-size:12px;">emmyelsawyshaheen@gmail.com</div>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="contact-icon"><i class="ti ti-phone"></i></div>
+      <div>
+        <div class="contact-label">Phone</div>
+        <div class="contact-val">+20 106 956 6755</div>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="contact-icon"><i class="ti ti-brand-github"></i></div>
+      <div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-val">
+          <a href="https://github.com/" target="_blank">github.com/Emmy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="contact-icon"><i class="ti ti-brand-linkedin"></i></div>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-val">
+          <a href="https://www.linkedin.com/in/emmy-amir-31832829b" target="_blank">linkedin.com/in/Emmy</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  Built with ♥ · Emmy Amir Magdy El-Sawy · 2026
+</footer>
+
+</body>
+</html>
