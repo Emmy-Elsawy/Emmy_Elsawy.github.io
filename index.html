@@ -77,13 +77,13 @@
     }
     .hero-top { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
     .avatar {
-      width: 72px; 
-      height: 72px; 
-      border-radius: 50%;
-      background: var(--p-accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; font-weight: 500; color: #fff; flex-shrink: 0;
-      object-fit: cover; /* 👈 Add this line to keep your photo perfectly proportioned */
+    width: 72px; 
+    height: 72px; 
+    border-radius: 50%;
+    background: var(--p-accent);
+    flex-shrink: 0;
+    object-fit: cover;
+    display: block; /* 👈 This ensures an <img> tag renders properly without layout bugs */
     }
     .hero h1 { font-size: 26px; font-weight: 500; line-height: 1.2; color: #111; }
     .hero .subtitle { font-size: 14px; color: #666; margin-top: 2px; }
